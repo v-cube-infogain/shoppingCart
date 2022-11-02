@@ -8,7 +8,7 @@ import Profile from "../Pages/Profile/profile";
 
 const Router = () => {
     return (
-        <BrowserRouter basename="shoppingCart">
+        <BrowserRouter basename="/shoppingCart">
               <Header />
             <Routes>
               
