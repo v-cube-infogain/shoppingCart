@@ -13,16 +13,22 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { updateProfile } from '../../Redux/loginSlice';
 import { registrationService } from '../../Services/registrationAPI';
+import { updateProfileService } from '../../Services/profileAPI';
 
 const Profile = () => {
     const dispatch = useDispatch();
     const [isEditMode, setIsEditMode] = useState(false);
     const data = useSelector(state => state.login.userDetails);
-    const { firstName, lastName, gender, phone, email, password } = data;
+    const { firstName, lastName, gender, phone, email, password, id } = data;
 
     const updateTextField = (e) => {
         const { name, value } = e.target;
         dispatch(updateProfile({ [name]: value }));
+    }
+
+    const onUpdateClick = () => {
+        updateProfileService(id, { firstName, lastName, gender, phone, email, password });
+        setIsEditMode(false);
     }
 
     return (
@@ -79,7 +85,7 @@ const Profile = () => {
                 </Grid>
                 {isEditMode &&
                     <Grid item xs={6}>
-                        <Button fullWidth variant="contained" onClick={() => setIsEditMode(false)}>Update</Button>
+                        <Button fullWidth variant="contained" onClick={onUpdateClick}>Update</Button>
                     </Grid>
                 }
             </Grid>

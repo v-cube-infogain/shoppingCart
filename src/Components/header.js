@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { useNavigate} from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -14,6 +14,19 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import IconButton from '@mui/material/IconButton';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Badge from '@mui/material/Badge';
+import { styled } from '@mui/material/styles';
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    right: -3,
+    top: 13,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: '0 4px',
+  },
+}));
 
 const pages = ['Products'];
 const settings = ['Profile', 'Logout'];
@@ -22,6 +35,7 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
+  const { products } = useSelector(state => state.cart);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -159,14 +173,19 @@ function Header() {
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
-            >             
-                <MenuItem onClick={onProfileClick}>
-                  <Typography textAlign="center">Profile</Typography>
-                </MenuItem>
-                <MenuItem onClick={onLogoutClick}>
-                  <Typography textAlign="center">Logout</Typography>
-                </MenuItem>             
+            >
+              <MenuItem onClick={onProfileClick}>
+                <Typography textAlign="center">Profile</Typography>
+              </MenuItem>
+              <MenuItem onClick={onLogoutClick}>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
             </Menu>
+            <IconButton aria-label="cart" onClick={() => navigate('/cart')}>
+              <StyledBadge badgeContent={products.length} color="secondary">
+                <ShoppingCartIcon color="white" />
+              </StyledBadge>
+            </IconButton>
           </Box>
         </Toolbar>
       </Container>
